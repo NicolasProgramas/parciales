@@ -1,0 +1,273 @@
+//parciales de listas enlanzadas
+package ejer_listas_enlanzadas;
+
+
+public class ListaInt {
+	NodoInt primero;
+
+	ListaInt() {
+		this.primero = null;
+	}
+
+	public void imprimir() {
+		System.out.print("[");
+		NodoInt actual = this.primero;
+		while (actual != null) {
+			System.out.print(actual.elemento + " ");
+			actual = actual.siguiente;
+		}
+		System.out.println("]");
+	}
+
+	public void agregarAdelante(int n) {
+		NodoInt nuevo = new NodoInt(n);
+		nuevo.siguiente = this.primero;
+		this.primero = nuevo;
+	}
+
+	public int largo() {
+		int l = 0;
+		NodoInt n = this.primero;
+		while (n != null) {
+			l++;
+			n = n.siguiente;
+		}
+		return l;
+	}
+
+	public void agregarAtras(int n) {
+		NodoInt nuevo = new NodoInt(n);
+		if (this.primero == null)
+			this.primero = nuevo;
+		else {
+			NodoInt actual = this.primero;
+			while (actual.siguiente != null) {
+				actual = actual.siguiente;
+			}
+			actual.siguiente = nuevo;
+		}
+	}
+
+	void quitar(int n) {
+		if (this.primero != null && this.primero.elemento == n)
+			this.primero = this.primero.siguiente;
+
+		else {
+			NodoInt actual = this.primero;
+
+			while (actual.siguiente != null && actual.siguiente.elemento != n)
+				actual = actual.siguiente;
+
+			if (actual.siguiente != null)
+				actual.siguiente = actual.siguiente.siguiente;
+		}
+	}
+	//Parcial (turno tarde) – 8/11/2023
+	public ListaInt extraerConsecutivos() {
+		ListaInt nuevaLst = new ListaInt(); // --------> 1 op
+		if (this.primero == null) {         // --------> 1 op
+			return nuevaLst;            // --------> 1 op
+		}
+		// Agrego el menor numero de this a la nueva lista
+		NodoInt actual = this.primero;
+		int menor = this.primero.elemento;    // -----> O(1)
+		while (actual != null) {              // -----> n rep
+			if (actual.elemento < menor) {    // ---> 1op
+				menor = actual.elemento;      // ---> 1op
+			}
+			actual = actual.siguiente;        // ---> 1op
+		}
+		nuevaLst.primero = new NodoInt(menor);
+		// no olvidar eliminar el menor de la lista this
+
+		// Volver a recorrer la lista "sacando" los consecutivos
+		actual = this.primero;
+		int buscado = menor + 1;
+		NodoInt actual2 = nuevaLst.primero;
+		while (actual.siguiente != null) { // ---> n repeticiones
+			if (actual.siguiente.elemento == buscado) {
+				// Agrego el buscado a la lista nueva
+				NodoInt nuevo = new NodoInt(buscado);
+				actual2.siguiente = nuevo;
+				actual2 = nuevo;
+				// Elimino el buscado de this
+				actual.siguiente = actual.siguiente.siguiente;
+				// Aumentar el buscado
+				buscado++;
+			} else {
+				actual = actual.siguiente;
+			}
+		}
+
+		// eliminar el menor de la lista this
+		actual = this.primero;
+		while (actual.siguiente != null) { // ---> n repeticiones
+			if (actual.siguiente.elemento == menor) {
+				actual.siguiente = actual.siguiente.siguiente;
+			} else {
+				actual = actual.siguiente;
+			}
+		}
+		if (this.primero.elemento == menor) {
+			this.primero = this.primero.siguiente;
+		}
+
+		return nuevaLst;
+	}
+
+	// Este metodo recorre 3 veces la lista, haciendo operaciones O(1)
+	// Entonces queda de orden n+n+n, orden lineal: O(n).
+
+	//Recuperatorio (turno tarde) – 24/11/2021
+	public void agregarSumaDespuesDe(int k) {
+		if(this.primero==null) {
+			return ;
+		}
+		NodoInt actual = this.primero;
+		int suma = 0;
+		while(actual != null) {
+			suma+=actual.elemento;
+			actual= actual.siguiente;
+		}
+		// Paso 2: Recorrer la lista nuevamente para insertar la suma después de cada aparición de k.
+        actual = this.primero;
+        while (actual != null) {
+            if (actual.elemento == k) {
+                NodoInt nuevoNodo = new NodoInt(suma);
+                nuevoNodo.siguiente = actual.siguiente;
+                actual.siguiente = nuevoNodo;
+                actual = nuevoNodo.siguiente; // Saltar el nodo recién agregado.
+            } else {
+                actual = actual.siguiente;
+            }
+        }
+        }
+        //Parcial (turno tarde) – 09/11/2022
+    public void eliminarMinMax() {
+		if(this.primero==null) {
+			return ;
+		}
+		
+		NodoInt actual = this.primero;
+		int min = this.primero.elemento;
+		int max = this.primero.elemento;
+		
+		// Primer recorrido para encontrar los valores mínimos y máximos
+		while(actual!=null) {
+			if(actual.elemento<min) {
+				min=actual.elemento;
+			}
+			if(actual.elemento>max) {
+				max =actual.elemento;
+			}
+			actual=actual.siguiente;
+		}
+		
+		// Reiniciar el puntero actual al comienzo de la lista
+		actual = this.primero;
+		 
+		// Manejar el caso donde el primer nodo es el min o max
+	    while (actual != null && (actual.elemento == min || actual.elemento == max)) {
+	        this.primero = actual.siguiente;
+	        actual = this.primero;
+	    }
+
+	    // Si la lista está vacía después de eliminar los primeros nodos, retornar
+	    if (this.primero == null) {
+	        return;
+	    }
+
+	    // Eliminar nodos con valores min y max en el resto de la lista
+	    actual = this.primero;
+	    while (actual != null && actual.siguiente != null) {
+	        if (actual.siguiente.elemento == min || actual.siguiente.elemento == max) {
+	            actual.siguiente = actual.siguiente.siguiente;
+	        } else {
+	            actual = actual.siguiente;
+	        }
+	    }
+    }    
+	    //Parcial (turno tarde) – 10/11/2021
+	    public void insertarSuma(int k) {
+	    	if (this.primero==null) {
+	    		return;
+	    	}
+	    	NodoInt actual = this.primero;
+	    	
+	    	while(actual!=null && actual.siguiente!=null) {
+	    		if(actual.elemento+actual.siguiente.elemento==k) {
+	    			NodoInt nuevoNodo= new NodoInt(k);
+	    			nuevoNodo.siguiente=actual.siguiente;
+	    			actual.siguiente=nuevoNodo;
+	    			actual=nuevoNodo.siguiente;
+	    		}else {
+	    			actual=actual.siguiente;
+	    	}
+	    }
+	    }
+		//Recuperatorio Parcial (turno noche) – 27/06/2019
+	    public void duplicarReflejando() {
+	    	if (this.primero==null) {
+	    		return;
+	    	}
+	    	// Paso 1: Crear una nueva lista en orden inverso
+	        NodoInt actual = this.primero;
+	        NodoInt nuevaLista = null;
+
+	    	while (actual!=null) {
+	    		NodoInt nuevoNodo = new NodoInt(actual.elemento);
+	            nuevoNodo.siguiente = nuevaLista;
+	            nuevaLista = nuevoNodo;
+	            actual = actual.siguiente;
+	    	}
+	    	// Paso 2: Insertar la nueva lista al comienzo de la lista original
+	        NodoInt ultimo = nuevaLista;
+	        while (ultimo.siguiente != null) {
+	            ultimo = ultimo.siguiente;
+	        }
+	        ultimo.siguiente = this.primero;
+	        this.primero = nuevaLista;
+	    }
+	    
+		//Parcial 1 (turno ma˜nana) – 7/6/2021
+	    public void acomodarBandera() {
+	        if (this.primero == null) {
+	            return;
+	        }
+
+	        // Paso 1: Contar las ocurrencias de 1's, 2's y 3's
+	        int count1 = 0, count2 = 0, count3 = 0;
+	        NodoInt actual = this.primero;
+
+	        while (actual != null) {
+	            if (actual.elemento == 1) {
+	                count1++;
+	            } else if (actual.elemento == 2) {
+	                count2++;
+	            } else if (actual.elemento == 3) {
+	                count3++;
+	            }
+	            actual = actual.siguiente;
+	        }
+
+	        // Paso 2: Reconstruir la lista con los valores en el orden deseado
+	        actual = this.primero;
+	        while (count1 > 0) {
+	            actual.elemento = 1;
+	            actual = actual.siguiente;
+	            count1--;
+	        }
+	        while (count2 > 0) {
+	            actual.elemento = 2;
+	            actual = actual.siguiente;
+	            count2--;
+	        }
+	        while (count3 > 0) {
+	            actual.elemento = 3;
+	            actual = actual.siguiente;
+	            count3--;
+	        }
+	    }
+	}
+
+
