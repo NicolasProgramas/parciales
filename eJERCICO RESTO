@@ -1,0 +1,317 @@
+package parciales;
+
+public class Ejer_resto {
+	//Parcial (turno tarde) – 8/11/2023
+	//Ejercicio 2  resto
+	public static int contarP(String s) {
+		if (s.length() <= 1) {
+			return 0;
+		}
+		if (s.charAt(0)<s.charAt(1)) {
+			return 1+contarP(resto(s)); 
+		}else {
+			return contarP(resto(s));
+		}
+	}
+	
+	//Recuperatorio (turno tarde) – 24/11/2021
+	//Ejercicio 2
+	public static String reemplazarVocales(String s, String t) {
+        // Caso base: Si la cadena s está vacía, devolvemos s.
+        if (s.isEmpty() || t.isEmpty()) {
+            return s;
+        }
+        // Si el primer carácter de s es una vocal
+        if (esVocal(s.charAt(0))) {
+            // Si el primer carácter de t es una vocal, lo usamos como reemplazo.
+            if (esVocal(t.charAt(0))) {
+                return t.charAt(0) + reemplazarVocales(resto(s), resto(t));
+            } else {
+                // Si t está vacío o ya no tiene vocales, no reemplazamos la vocal de s.
+                return  reemplazarVocales(s, resto(t));
+            }
+        } else {
+            // Si el primer carácter de s no es una vocal, no lo reemplazamos.
+            return s.charAt(0) + reemplazarVocales(resto(s), t);
+        }
+    }
+	
+	//Parcial (turno tarde) – 09/11/2022
+	//Ejercicio 2
+		public static String intercalarCharDesde(String s, char c, int pos) {
+	        // Caso base: Si la cadena s está vacía, devolvemos s.
+	        if (s.isEmpty()) {
+	            return s;
+	        }
+
+	        // Si la posición es 0 o menor, intercalamos el carácter c.
+	        if (pos == -1) {
+	            return "" + c+ s.charAt(0) + intercalarCharDesde(resto(s), c, pos);
+	        } else {
+	            // Si la posición es mayor que 0, continuamos sin intercalar.
+	            return "" +  s.charAt(0) + intercalarCharDesde(resto(s), c, pos - 1);
+	        }
+	    }
+	
+	//Parcial (turno tarde) – 10/11/2021
+	//Ejercicio 2
+		public static String ultimosAlReves(String s, int n) {
+			if (n==0 || s.isEmpty()) {
+				return "";
+			}
+			if (n < s.length()) {
+				return ultimosAlReves(resto(s),n);
+			}else {
+				return ultimosAlReves(resto(s),n-1)+s.charAt(0);
+			}
+		}
+	
+	//Recuperatorio Parcial (turno noche) – 27/06/2019
+	//Ejercicio 2
+		public static String extremos(String s, int n, int m) {
+	        // Caso base: Si la cadena s está vacía o n y m son ambos 0, devolvemos una cadena vacía.
+	        if (s.isEmpty() || (n == 0 && m == 0)) {
+	            return "";
+	        }
+
+	        // Si n es mayor que 0, agregamos el primer carácter y llamamos recursivamente reduciendo n.
+	        if (n > 0) {
+	            return s.charAt(0) + extremos(resto(s), n - 1, m);
+	        }
+	        
+	        // Si n es 0, pero m es mayor que 0, llamamos recursivamente hasta que queden m caracteres.
+	        if (n == 0 && m > 0 && s.length() == m) {
+	            return s;
+	        }
+	        
+	        // Si n es 0, pero m es mayor que 0, continuamos llamando recursivamente reduciendo s.
+	        return extremos(resto(s), n, m);
+	    }
+	
+	//Parcial 1 (turno mañana) – 7/6/2021
+	//Ejercicio 2
+		public static char caracterMayor(String s) {
+			if (s.length()==1) {
+				return s.charAt(0);
+			}
+			
+			if (s.charAt(0)>caracterMayor(resto(s))) {
+				return s.charAt(0);
+			}else {
+				return caracterMayor(resto(s));
+			}
+		}
+	
+	//Parcial (turno tarde) – 6/6/2022
+	//Ejercicio 2
+		public static String cambiarEn(String s, char c, int n) {
+			if(s.length()==0 || n>=s.length()) {
+				return s;
+			}
+			if (n==0) {
+				return  c + resto(s);
+			}else {
+				return s.charAt(0) + cambiarEn(resto(s),c,n-1);
+			}
+		}
+
+	//Parcial (turno noche) – 13/06/2019
+	//Ejercicio 2
+		public static boolean estaIncluida(String s1, String s2) {
+			if(s1.length()==0){
+				return true;
+			}
+			if (s2.length()==0) {
+				return false;
+			}
+			
+			if (s1.charAt(0)==s2.charAt(0)) {
+				return estaIncluida(resto(s1) , resto(s2));
+			}else {
+				return estaIncluida(s1 , resto(s2));
+			}
+			
+		}
+	//Funciones Auxiliares
+		//resto
+		
+	//Parcial (turno noche) – 14/11/2019
+	//Ejercicio 2
+		public static String eliminarVocalesYRevertir(String s) {
+			if (s.length()==0) {
+				return s;
+			}
+			if (esVocal(s.charAt(0))) {
+				return ""+ eliminarVocalesYRevertir(resto(s));
+			}else {
+				return "" + eliminarVocalesYRevertir(resto(s)) + s.charAt(0);
+			}
+		}
+	
+	//Parcial (turno tarde) – 12/06/2019
+	//Ejercicio 2
+		public static String estaPrimera(String s1, String s2) {
+			if (s1.length()==0 || s2.length()==0) {
+				return "";
+			}
+			if(s1.charAt(0)==s2.charAt(0)) {
+				
+				return s1.charAt(0) + estaPrimera(resto(s1),resto(s2));
+			}else {
+				if(s1.charAt(0)<s2.charAt(0)) {
+					return s1;
+				}else {
+					return s2;
+				}
+			}
+		}
+
+	//Parcial (turno mañana) – 13/11/2019
+	//Ejercicio 2
+		public static  String desordenarLetras(String s) {
+			if (s.length()==0) {
+				return s;
+			}
+			if (!esVocal(s.charAt(0))) {
+				return s.charAt(0)+desordenarLetras(resto(s));
+			}else {
+				return desordenarLetras(resto(s)) + s.charAt(0);
+			}
+			
+		}
+
+	//Recuperatorio (turno tarde) – 27/11/2019
+	//Ejercicio 2
+		public static String repetirChar(String s, char c, int n) {
+			if(s.isEmpty() || n == 0) {
+				return s;
+			}
+			if (s.charAt(0)==c) {
+				String repeticiones = "";
+	            for (int i = 0; i < n; i++) {
+	                repeticiones += c;
+	            }
+	            return repeticiones + repetirChar(resto(s), c, n);
+			}else {
+				return s.charAt(0) + repetirChar(resto(s),c,n) ;
+			}
+		}
+	
+	//Parcial (turno noche) – 08/06/2021
+	//Ejercicio 2
+		public static String filtrarYDuplicar(String s, String f) {
+			if (s.length()==0 || f.length()==0) {
+				return "";
+			}
+			if (f.charAt(0)=='1' || f.charAt(0)=='2'){
+				String resultado = "";
+	            if (f.charAt(0) == '2') {
+	                resultado += s.charAt(0);
+	            }
+	            resultado += s.charAt(0);
+	            return resultado + filtrarYDuplicar(resto(s), resto(f));
+	        } else {
+	            // Si el primer carácter de f no es '1' ni '2', pasamos al siguiente carácter de f.
+	            return filtrarYDuplicar(resto(s), resto(f));
+	        }
+			
+		}
+	//Funciones Auxiliares
+		//Resto
+		public static String resto(String s) {
+			String salida ="";
+			for (int i = 1; i < s.length() ; i++) {
+				salida = salida + s.charAt(i);
+			}
+			return salida;
+		}
+		//Es Vocal
+		public static boolean esVocal(char c) {
+	        // Comprueba si el carácter es una vocal (minúscula o mayúscula)
+	        return "aeiouAEIOU".indexOf(c) != -1;
+	    }
+		
+	public static void main(String[] args) {
+
+	
+//		System.out.println(contarP("palabra"));
+//		System.out.println(contarP("loco"));
+//		System.out.println(contarP("pelusas"));
+//		System.out.println(contarP("zona"));
+//		System.out.println(contarP("adios"));
+//		
+//		// Ejemplos de prueba
+//		System.out.println(reemplazarVocales("color", "mesa")); // "celar"
+//        System.out.println(reemplazarVocales("color", "pre"));  // "celor"
+//        System.out.println(reemplazarVocales("ushuaia", "monono")); // "oshooia"
+//        System.out.println(reemplazarVocales("hola", "eeeeeeee")); // "hele"
+//        System.out.println(reemplazarVocales("", "casa")); // ""
+//        System.out.println(reemplazarVocales("hola", "")); // "hola"
+//	
+//        System.out.println(intercalarCharDesde("calcular", 'x', 2)); // "calxcxuxlxaxr"
+//        System.out.println(intercalarCharDesde("calcular", 'x', 6)); // "calculaxr"
+//        System.out.println(intercalarCharDesde("grupo", '*', 0));    // "g*r*u*p*o"
+//        System.out.println(intercalarCharDesde("", 'x', 2));         // ""
+//	
+//        System.out.println(ultimosAlReves("recital",3));
+//        System.out.println(ultimosAlReves("recital",5));
+//        System.out.println(ultimosAlReves("recital",7));
+//        System.out.println(ultimosAlReves("",3));
+//        System.out.println(ultimosAlReves("hola",1));
+//        System.out.println(ultimosAlReves("hola",2));
+//        
+//        System.out.println(extremos("solemnidad", 4, 3)); // "soledad"
+//        System.out.println(extremos("solitario", 3, 1));  // "solo"
+//        System.out.println(extremos("soledad", 0, 4));   // "edad"
+//        System.out.println(extremos("soledad", 3, 0));   // "sol"
+//        System.out.println(extremos("palabra", 0, 0));   // ""
+//	
+//		System.out.println(caracterMayor("a"));
+//		System.out.println(caracterMayor("abcdefghi"));
+//		System.out.println(caracterMayor("capicua"));      // 'u'
+//   	System.out.println(caracterMayor("universitario"));// 'v'
+//      System.out.println(caracterMayor("cazador"));      // 'z'
+		
+//		System.out.println(cambiarEn("cometa",'i',7));
+//		System.out.println(cambiarEn("cometa",'i',0));
+//		System.out.println(cambiarEn("cometa",'i',3));
+//		System.out.println(cambiarEn("cometa",'i',5));
+//		System.out.println(cambiarEn("",'m',0));
+//		System.out.println(cambiarEn("",'i',4));
+		
+//		System.out.println(estaIncluida("ala", "calidad"));       // true
+//        System.out.println(estaIncluida("alla", "calidad"));      // false
+//        System.out.println(estaIncluida("alla", "llave"));        // false
+//        System.out.println(estaIncluida("cajon", "callejones"));  // true
+//        System.out.println(estaIncluida("", "palabra"));          // true
+//        System.out.println(estaIncluida("ala", "almidon"));       // false
+	
+//		System.out.println(eliminarVocalesYRevertir("toro"));
+//		System.out.println(eliminarVocalesYRevertir("risa"));
+//		System.out.println(eliminarVocalesYRevertir("mapa"));
+//		System.out.println(eliminarVocalesYRevertir("fadap"));
+//		System.out.println(eliminarVocalesYRevertir("uia"));
+		
+//		System.out.println(estaPrimera("piedra","cantor"));
+//		System.out.println(estaPrimera("","perro"));
+//		System.out.println(estaPrimera("hielo","holanda"));
+//		System.out.println(estaPrimera("candelabro","canario"));
+//		System.out.println(estaPrimera("materia",""));
+	
+//		System.out.println(desordenarLetras("murcielago"));
+//		System.out.println(desordenarLetras("manzana"));
+//		System.out.println(desordenarLetras("llamado"));
+//		System.out.println(desordenarLetras("el"));
+	
+//		System.out.println(repetirChar("ameno", 'a', 3));   // "aaameno"
+//        System.out.println(repetirChar("caerse", 'e', 4));  // "caeeeerseeee"
+//        System.out.println(repetirChar("fino", 'u', 2));    // "fino"
+		
+		System.out.println(filtrarYDuplicar("abcdefghi", "000111002"));   // "defii"
+        System.out.println(filtrarYDuplicar("abcdefghi", "110022"));      // "abeeff"
+        System.out.println(filtrarYDuplicar("abcd", "11100000111222"));   // "abc"
+        System.out.println(filtrarYDuplicar("abcd", ""));                  // ""
+		
+	}
+
+}
