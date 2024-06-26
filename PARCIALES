@@ -1,0 +1,228 @@
+package parcial_turno_tarde_8_11_23;
+
+public class Negocio {
+	Sucursal[] sucursales;
+
+//a)
+//clase Negocio
+	
+	public int tienenStock() {
+		int cant = 0;
+		for (Sucursal s: sucursales) {
+			if (s.verificarStock()){
+				cant++;
+			}
+		}
+		return cant;
+	}
+	//a)
+	//clase sucursal
+	public boolean verificarStock() {
+		for(int i ; i<this.stock.length ; i++) {
+			if(stock[i]<=0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	//En la clase Negocio
+	public ArrayList<Empleados> exclusivosPorMarca(String m, int min) {
+	    ArrayList<Empleados> lista = new ArrayList<Empleados>();
+	    for(Sucursal s : sucursales) {
+	        if(s.soloVendeMarca(m)) {
+	            for(Empleado e : s.empleados) {
+	                if(min <= e.ventas && !lista.contains(e)) {
+	                   lista.add(e);
+	                }
+	            }
+	        }
+	   }
+	   return lista;
+	}
+	//En la clase Sucursal
+	 public boolean soloVendeMarca(String m) {
+	     for(Producto p : productos) {
+	         if ( !p.marca.equals(m) ) {
+	           return false;
+	         }
+	     }
+	     return true;
+	 }
+	 //c)
+	 //clase Negocio
+	 public Producto masPromocionado() {
+		 Producto candidato = sucursales[0].productos[0];
+		    for(Sucursal s : sucursales) {
+		       for(Producto p : s.productos) {
+		          if( cantPromos(p) > cantPromos(candidato) ) {
+		              candidato = p;
+		          }
+		       }
+		   }
+		   return candidato;
+		 }
+	 public int cantPromos(Producto p) {
+		    int cont = 0;
+		    for(Sucursal s : sucursales) {
+		       for(Promocion promo : s.promociones) {
+		           for(Producto prod : promo.combo) {
+		               if(prod.equals(p)) {
+		                  cont++;
+		               }  
+		           }
+		       }
+		    }
+		    return cont;
+		 }	 
+	 }
+}
+//OTRO PARCIAL
+package parcial_turno_tarde_9_11_22;
+
+public class AppVentas {
+	Usuario [] usuarios;
+	
+	//a)
+	//clase APPVENTAS
+	public boolean mismaCompra(Usuario u1, Usuario u2) {
+		for (Usuario u : usuarios) {
+			for( Publicacion p: u.publicaciones) {
+				boolean estaU1 = false;
+				boolean estaU2 = false;
+				for (Usuario compra : p.compradores) {
+					if(compra.equals(u1)) {
+						estaU1 = true;
+					}
+					if (compra.equals(u2)) {
+						estaU2 = true;
+					}
+				}
+				if (estaU1 && estaU2 == true) {
+					return true;
+					
+			}
+		}
+		return false;
+	}
+	//b)
+	public ArrayList<Usuario> mejoresVendedores(double min){
+		Arraylist<Usuario> vendedores = new ArrayList<>();
+		for (Usuario u : usuarios) {
+			if(u.todasPubProm(min)) {
+				vendedores.add(u);
+			}
+		}
+		return vendedores;
+	}
+	//En la clase Usuario
+	public boolean todasPubProm(min) {
+		int cont = 0;
+		for (Publicacion p : publicaciones) {
+			if(p.promedio()>min) {
+				cont++;
+			}
+		}
+		return cont == publicaciones.length;
+	}
+	//Publicacion
+	public double promedio() {
+		double suma = 0.0;
+		for(Comentario com : reseñas) {
+			suma+=com.valoracion;
+		}
+	return suma/reseñas.length;
+	}
+	//c)
+	public Usuario elMasComentador() {
+		Usuario masCom = usuarios[0];
+		for( Usuario us : usuarios) {
+			if(cantComentarios(us)>cantComentarios(masCom)) {
+				masCom = us;
+			}
+		}
+		return masCom;
+	}
+	public int cantComentarios(Usuario u) {
+		int cont = 0 ;
+		for (Usuario us : usuarios) {
+			for (Publicacion p : us.publicaciones) {
+				for (Comentario com: p.reseñas) {
+					if (u.equals(com.autor)) {
+						cont++;
+					}
+				}
+			}
+		}
+		return cont;
+	}
+}
+//OTRO PARCIAL
+package recu_turno_tarde_24_11_21;
+
+public class ServicioPostVenta {
+	Vehiculo [] vehiculos;
+	
+	
+	//a)
+	//clase ServicioPostVenta
+	public int cantServiciosConRepuestoEnDolares() {
+		int cant = 0;
+		for (Vehiculo v : vehiculos) {
+			for (Servicio s : v.servicios) {
+				for (Repuesto repuesto : s.repuestos) {
+					if ("dolares".equals(repuesto.tipoMoneda)) {
+						count++;  
+					}
+				}
+			}
+		}
+    return cant;
+	}
+	//b
+	// Método que retorna una lista de los vehículos cuyos servicios tienen un costo total mayor a min
+    public LinkedList<Vehiculo> todosServiciosCaros(double min) {
+        LinkedList<Vehiculo> result = new LinkedList<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            boolean allExpensive = true;
+            for (Servicio servicio : vehiculo.servicios) {
+                double costoTotal = 300; // Costo base del servicio
+                for (Repuesto repuesto : servicio.repuestos) {
+                    costoTotal += repuesto.precio;
+                }
+                if (costoTotal <= min) {
+                    allExpensive = false;
+                    break;
+                }
+            }
+            if (allExpensive) {
+                result.add(vehiculo);
+            }
+        }
+        return result;
+    }
+    //c
+ // Método que retorna la marca de repuesto más usada en toda la empresa de post venta
+    public String marcaMasUsada() {
+        Map<String, Integer> marcaCount = new HashMap<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            for (Servicio servicio : vehiculo.servicios) {
+                for (Repuesto repuesto : servicio.repuestos) {
+                    marcaCount.put(repuesto.marca, marcaCount.getOrDefault(repuesto.marca, 0) + 1);
+                }
+            }
+        }
+
+        String marcaMasUsada = null;
+        int maxCount = 0;
+        for (String marca : marcaCount.keySet()) {
+            int count = marcaCount.get(marca);
+            if (count > maxCount) {
+                maxCount = count;
+                marcaMasUsada = marca;
+            }
+        }
+
+        return marcaMasUsada;
+    }
+}
+
